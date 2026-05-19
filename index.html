@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>南国经营哲学·成长手册</title>
+<style>
+/* ═══════════════════════════════
+   基础重置与变量
+═══════════════════════════════ */
+:root {
+  --g1: #1A4A2E;
+  --g2: #2D7A4F;
+  --g3: #4CAF72;
+  --gp: #EBF5EC;
+  --gf: #F4FAF5;
+  --gd: #D0EDD8;
+  --gold: #B7860B;
+  --gold-l: #FEF9E7;
+  --ink: #1A1A1A;
+  --ink2: #3A3A3A;
+  --gray: #666;
+  --line: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F7F5F1;
+  --r: 12px;
+  --sh: 0 2px 16px rgba(0,0,0,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ═══════════════════════════════
+   顶部导航栏
+═══════════════════════════════ */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  background: var(--g1);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.top-bar-title {
+  font-size: 15px; font-weight: 600; color: #fff;
+  letter-spacing: 0.5px;
+}
+.top-bar-menu {
+  width: 36px; height: 36px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 5px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 8px; cursor: pointer; border: none;
+}
+.top-bar-menu span {
+  display: block; width: 18px; height: 2px;
+  background: #fff; border-radius: 1px;
+  transition: all 0.3s;
+}
+.top-bar-menu.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.top-bar-menu.open span:nth-child(2) { opacity: 0; }
+.top-bar-menu.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* 阅读进度 */
+.progress {
+  position: fixed; top: 52px; left: 0; right: 0; z-index: 199;
+  height: 3px; background: rgba(0,0,0,0.08);
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--g2), var(--g3));
+  width: 0%; transition: width 0.1s;
+}
+
+/* ═══════════════════════════════
+   抽屉导航
+═══════════════════════════════ */
+.drawer-mask {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.5);
+  -webkit-tap-highlight-color: transparent;
+}
+.drawer-mask.show { display: block; }
+.drawer {
+  position: fixed; top: 0; right: -280px; bottom: 0;
+  width: 280px; z-index: 301;
+  background: var(--g1);
+  overflow-y: auto;
+  transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+  padding-bottom: 40px;
+}
+.drawer.open { right: 0; }
+.drawer-head {
+  padding: 60px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.drawer-head-title {
+  font-size: 18px; font-weight: 700; color: #fff;
+  line-height: 1.3; margin-bottom: 4px;
+}
+.drawer-head-sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+.drawer-chap-label {
+  padding: 16px 20px 6px;
+  font-size: 10px; letter-spacing: 2px;
+  color: rgba(255,255,255,0.3); text-transform: uppercase;
+}
+.drawer-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.75); font-size: 14px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s; cursor: pointer;
+}
+.drawer-item:active, .drawer-item.active {
+  background: rgba(255,255,255,0.1);
+  border-left-color: var(--g3);
+  color: #fff;
+}
+.drawer-item-icon { font-size: 16px; flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   页面内容区
+═══════════════════════════════ */
+.page-wrap {
+  padding-top: 55px; /* 顶栏高度 */
+}
+
+/* ═══════════════════════════════
+   封面
+═══════════════════════════════ */
+.cover {
+  min-height: 100svh;
+  background: linear-gradient(160deg, var(--g1) 0%, #2D6A4F 55%, #3A8A60 100%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px 28px 56px;
+  position: relative; overflow: hidden;
+}
+.cover-deco {
+  position: absolute; top: -20px; right: -24px;
+  font-size: 220px; font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1; pointer-events: none;
+  user-select: none;
+}
+.cover-logo-area {
+  position: absolute; top: 72px; left: 28px;
+}
+.cover-logo-text {
+  font-size: 10px; letter-spacing: 4px;
+  color: rgba(255,255,255,0.4); text-transform: uppercase;
+}
+.cover-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  margin-bottom: 20px; letter-spacing: 1px;
+}
+.cover-title {
+  font-size: 52px; font-weight: 800;
+  color: #fff; line-height: 1.1;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+.cover-sub {
+  font-size: 18px; font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 32px; letter-spacing: 2px;
+}
+.cover-divider {
+  width: 40px; height: 2px;
+  background: rgba(255,255,255,0.3);
+  margin-bottom: 24px;
+}
+.cover-mission {
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  line-height: 1.9;
+  border-left: 2px solid rgba(255,255,255,0.2);
+  padding-left: 14px;
+  margin-bottom: 36px;
+}
+.cover-mission strong { color: rgba(255,255,255,0.85); }
+.cover-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.cover-chip {
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 16px;
+  font-size: 11px; color: rgba(255,255,255,0.6);
+}
+.cover-scroll-hint {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: rgba(255,255,255,0.3); font-size: 11px;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(4px)} }
+
+/* ═══════════════════════════════
+   章节容器
+═══════════════════════════════ */
+.chapter {
+  padding: 32px 0 20px;
+}
+.chapter-header {
+  padding: 0 20px 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.chapter-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+  box-shadow: var(--sh);
+}
+.chapter-num {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 4px;
+}
+.chapter-title {
+  font-size: 26px; font-weight: 800;
+  color: var(--ink); line-height: 1.2;
+  margin-bottom: 6px;
+}
+.chapter-desc { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+/* 内容内边距 */
+.px { padding-left: 20px; padding-right: 20px; }
+
+/* ═══════════════════════════════
+   分区标题
+═══════════════════════════════ */
+.sec-label {
+  display: flex; align-items: center; gap: 10px;
+  margin: 28px 20px 16px;
+}
+.sec-bar {
+  width: 3px; height: 18px; background: var(--g2);
+  border-radius: 2px; flex-shrink: 0;
+}
+.sec-text {
+  font-size: 17px; font-weight: 700; color: var(--g1);
+}
+
+/* ═══════════════════════════════
+   卡片
+═══════════════════════════════ */
+.card {
+  background: var(--white);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--sh);
+  margin: 0 20px 14px;
+}
+.card-green {
+  background: var(--gf);
+  border-left: 3px solid var(--g2);
+}
+.card-gold {
+  background: var(--gold-l);
+  border-left: 3px solid var(--gold);
+}
+.card-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-body {
+  font-size: 14.5px; color: var(--ink2); line-height: 1.85;
+}
+.card-body p { margin-bottom: 10px; }
+.card-body p:last-child { margin-bottom: 0; }
+.card-body strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   使命块
+═══════════════════════════════ */
+.mission-block {
+  background: var(--white);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  margin: 0 20px 14px;
+}
+.mission-head {
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.mission-head-icon { font-size: 18px; }
+.mission-head-title {
+  font-size: 15px; font-weight: 700; color: #fff;
+}
+.mission-body {
+  padding: 18px;
+  font-size: 14.5px; color: var(--ink2); line-height: 1.85;
+}
+.mission-body p { margin-bottom: 8px; }
+.mission-body p:last-child { margin-bottom: 0; }
+.mission-body strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   价值观卡片
+═══════════════════════════════ */
+.value-card {
+  background: var(--white);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  margin: 0 20px 14px;
+}
+.value-head {
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.value-icon-box {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.value-name { font-size: 17px; font-weight: 800; }
+.value-essence { font-size: 12px; color: var(--gray); margin-top: 1px; }
+.value-list {
+  padding: 0 18px 16px; list-style: none;
+}
+.value-list li {
+  font-size: 14px; color: var(--ink2);
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+  display: flex; gap: 8px; line-height: 1.6;
+}
+.value-list li::before {
+  content: '◆'; color: var(--g3); font-size: 7px;
+  margin-top: 7px; flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   数字列表
+═══════════════════════════════ */
+.num-list { padding: 0 20px; }
+.num-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--white);
+  border-radius: var(--r);
+  padding: 18px;
+  margin-bottom: 10px;
+  box-shadow: var(--sh);
+}
+.num-badge {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.num-content { flex: 1; }
+.num-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink); margin-bottom: 5px;
+}
+.num-desc { font-size: 13.5px; color: var(--ink2); line-height: 1.75; }
+
+/* ═══════════════════════════════
+   时间轴
+═══════════════════════════════ */
+.timeline { padding: 0 20px; position: relative; }
+.timeline::before {
+  content: ''; position: absolute;
+  left: 38px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--g2), var(--gd));
+}
+.tl-item {
+  display: flex; gap: 14px; margin-bottom: 20px;
+  position: relative;
+}
+.tl-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--white); border: 3px solid var(--g2);
+  flex-shrink: 0; margin-top: 4px; z-index: 1;
+}
+.tl-dot.big {
+  width: 20px; height: 20px; background: var(--g2);
+  border-color: var(--g1); margin-top: 2px;
+}
+.tl-body { flex: 1; }
+.tl-year {
+  display: inline-block;
+  font-size: 12px; font-weight: 700; color: var(--g1);
+  background: var(--gp);
+  padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+}
+.tl-text {
+  font-size: 14px; color: var(--ink2); line-height: 1.75;
+}
+.tl-text strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   成功方程式
+═══════════════════════════════ */
+.formula-box {
+  background: var(--g1);
+  border-radius: var(--r);
+  padding: 28px 20px;
+  margin: 0 20px 14px;
+  text-align: center;
+}
+.formula-eq {
+  font-size: 17px; font-weight: 800; color: #fff;
+  letter-spacing: 1px; margin-bottom: 24px; line-height: 1.6;
+}
+.formula-eq .op { color: rgba(255,255,255,0.4); margin: 0 6px; }
+.formula-eq .var { color: #6ECF8E; }
+.formula-factors { display: flex; justify-content: center; gap: 20px; }
+.factor { text-align: center; }
+.factor-circle {
+  width: 68px; height: 68px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 12px; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.factor-name { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+/* ═══════════════════════════════
+   桃花源Tab
+═══════════════════════════════ */
+.dream-tabs {
+  display: flex; gap: 8px; overflow-x: auto; padding: 0 20px;
+  scrollbar-width: none; margin-bottom: 16px;
+}
+.dream-tabs::-webkit-scrollbar { display: none; }
+.dream-tab {
+  flex-shrink: 0;
+  padding: 8px 16px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  border: 2px solid var(--line);
+  background: var(--white); color: var(--gray);
+  white-space: nowrap; transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.dream-tab.active {
+  background: var(--g1); border-color: var(--g1); color: #fff;
+}
+.dream-panel { display: none; }
+.dream-panel.active { display: block; }
+.dream-item {
+  background: var(--white); border-radius: var(--r);
+  padding: 16px 18px; margin: 0 20px 10px;
+  box-shadow: var(--sh);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.dream-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.dream-text { font-size: 14.5px; color: var(--ink2); line-height: 1.8; }
+.dream-text strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   散文手风琴
+═══════════════════════════════ */
+.essay-item {
+  background: var(--white); border-radius: var(--r);
+  margin: 0 20px 10px;
+  box-shadow: var(--sh); overflow: hidden;
+}
+.essay-head {
+  padding: 16px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  gap: 12px;
+}
+.essay-head-left { flex: 1; }
+.essay-head-title {
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  margin-bottom: 3px;
+}
+.essay-head-tag {
+  display: inline-block; font-size: 11px;
+  padding: 2px 8px; border-radius: 10px;
+  background: var(--gp); color: var(--g2);
+}
+.essay-arrow {
+  font-size: 13px; color: var(--gray);
+  transition: transform 0.3s; flex-shrink: 0;
+}
+.essay-item.open .essay-arrow { transform: rotate(180deg); }
+.essay-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.essay-body-inner {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px; color: var(--ink2); line-height: 1.9;
+}
+.essay-body-inner p { margin-bottom: 12px; }
+.essay-body-inner p:first-child { margin-top: 14px; }
+.essay-body-inner p:last-child { margin-bottom: 0; }
+.essay-body-inner strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   朗诵条目
+═══════════════════════════════ */
+.reading-item {
+  background: var(--white); border-radius: var(--r);
+  padding: 16px 18px; margin: 0 20px 10px;
+  box-shadow: var(--sh);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.reading-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--gp); color: var(--g1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.reading-text {
+  font-size: 14.5px; color: var(--ink2); line-height: 1.85; flex: 1;
+}
+.reading-text strong { color: var(--g1); }
+
+/* ═══════════════════════════════
+   高亮引用
+═══════════════════════════════ */
+.quote-box {
+  background: var(--gold-l);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 16px 18px; margin: 0 20px 14px;
+  font-size: 14.5px; color: var(--ink2); line-height: 1.85;
+}
+.quote-box strong { color: var(--gold); }
+
+/* ═══════════════════════════════
+   结尾祝语
+═══════════════════════════════ */
+.end-card {
+  background: var(--g1);
+  border-radius: var(--r);
+  padding: 28px 24px; margin: 0 20px 14px;
+  text-align: center;
+}
+.end-card p {
+  font-size: 15px; color: rgba(255,255,255,0.75);
+  line-height: 2.2; margin-bottom: 6px;
+}
+.end-card p:last-child { margin-bottom: 0; }
+.end-card strong { color: #6ECF8E; }
+
+/* ═══════════════════════════════
+   分割线
+═══════════════════════════════ */
+.divider {
+  height: 8px; background: var(--bg);
+  margin: 8px 0;
+}
+
+/* ═══════════════════════════════
+   页脚
+═══════════════════════════════ */
+.page-footer {
+  background: var(--g1);
+  padding: 40px 24px;
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px; line-height: 2;
+  margin-top: 20px;
+}
+.page-footer strong { color: rgba(255,255,255,0.7); }
+
+/* ═══════════════════════════════
+   返回顶部
+═══════════════════════════════ */
+.back-top {
+  position: fixed; bottom: 24px; right: 20px; z-index: 100;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--g1); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  opacity: 0; transition: opacity 0.3s; cursor: pointer;
+  border: none; -webkit-tap-highlight-color: transparent;
+}
+.back-top.show { opacity: 1; }
+
+/* 章节背景间隔 */
+.bg-white { background: var(--white); }
+.bg-gray  { background: var(--bg); }
+</style>
+</head>
+<body>
+
+<!-- 顶栏 -->
+<div class="top-bar">
+  <div class="top-bar-title">南国经营哲学·成长手册</div>
+  <button class="top-bar-menu" id="menuBtn" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- 进度条 -->
+<div class="progress"><div class="progress-fill" id="prog"></div></div>
+
+<!-- 抽屉遮罩 -->
+<div class="drawer-mask" id="mask" onclick="toggleDrawer()"></div>
+
+<!-- 抽屉导航 -->
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-head-title">南国经营哲学<br>成长手册</div>
+    <div class="drawer-head-sub">内部学习版 · 仅供朗读</div>
+  </div>
+  <div class="drawer-chap-label">导言</div>
+  <div class="drawer-item" onclick="goto('cover')"><span class="drawer-item-icon">🏠</span>封面与致词</div>
+  <div class="drawer-chap-label">第一章</div>
+  <div class="drawer-item" onclick="goto('ch1')"><span class="drawer-item-icon">🌱</span>企业文化根基</div>
+  <div class="drawer-chap-label">第二章</div>
+  <div class="drawer-item" onclick="goto('ch2')"><span class="drawer-item-icon">⚙️</span>经营法则与方法论</div>
+  <div class="drawer-chap-label">第三章</div>
+  <div class="drawer-item" onclick="goto('ch3')"><span class="drawer-item-icon">📖</span>品牌故事与发展历程</div>
+  <div class="drawer-chap-label">第四章</div>
+  <div class="drawer-item" onclick="goto('ch4')"><span class="drawer-item-icon">🔮</span>桃花源·美好愿景</div>
+  <div class="drawer-chap-label">第五章</div>
+  <div class="drawer-item" onclick="goto('ch5')"><span class="drawer-item-icon">💡</span>人生智慧散文</div>
+  <div class="drawer-chap-label">第六章</div>
+  <div class="drawer-item" onclick="goto('ch6')"><span class="drawer-item-icon">❤️</span>心灵与家庭</div>
+</div>
+
+<div class="page-wrap">
+
+<!-- ═══════════════ 封面 ═══════════════ -->
+<section id="cover" class="cover">
+  <div class="cover-deco">南</div>
+  <div class="cover-logo-area">
+    <div class="cover-logo-text">Nanguo Health Industry · Handbook</div>
+  </div>
+  <div class="cover-tag">内部学习版 · 仅供朗读</div>
+  <div class="cover-title">南国<br>经营哲学</div>
+  <div class="cover-sub">成长手册</div>
+  <div class="cover-divider"></div>
+  <div class="cover-mission">
+    <strong>企业使命</strong><br>
+    为南国人物质与精神两方面的幸福，<br>
+    为顾客创造健康美味食品，<br>
+    为社会打造健康生活方式而努力奋斗！
+  </div>
+  <div class="cover-chips">
+    <span class="cover-chip">企业文化根基</span>
+    <span class="cover-chip">经营法则</span>
+    <span class="cover-chip">品牌故事</span>
+    <span class="cover-chip">桃花源愿景</span>
+    <span class="cover-chip">人生智慧</span>
+    <span class="cover-chip">心灵与家庭</span>
+  </div>
+  <div class="cover-scroll-hint">▼ 向下滑动</div>
+</section>
+
+<!-- 董事长致词 -->
+<section class="bg-white">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div>
+        <div class="chapter-num">Foreword</div>
+        <div class="chapter-title">董事长致词</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p>亲爱的南国家人们，大家好！</p>
+        <p>欢迎你正式加入海南南国实业大家庭！当你翻开这份成长手册，便标志着我们正式携手，踏上一条以成长为翼，以哲学为根的奋进之路。</p>
+        <p>我们承诺：必为每一位有追求、有担当的南国人搭建最广阔的事业平台，让你尽情施展才华、成就非凡价值！</p>
+      </div>
+    </div>
+    <div class="quote-box">
+      <strong>海南南国实业，深耕市场三十四年</strong>，我们将企业使命全面升级为：<br><br>
+      "为南国人物质与精神两方面的幸福，为顾客创造健康美味食品，为社会打造健康生活方式而努力奋斗！"
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>唯有全体南国人，同心同德、笃信笃行这份思维方式与企业哲学，我们才能心往一处想、劲往一处使，凝聚起无坚不摧、势不可挡的磅礴力量！</strong></p>
+        <p style="margin-top:16px;font-size:13px;color:var(--gray);">南国实业创始人 · 董事长&nbsp;&nbsp;刘汉惜</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第一章 ═══════════════ -->
+<section id="ch1" class="bg-gray">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#1A4A2E,#2D7A4F);">🌱</div>
+      <div>
+        <div class="chapter-num">Chapter 01</div>
+        <div class="chapter-title">企业文化根基</div>
+        <div class="chapter-desc">使命、愿景、价值观、经营理念——南国人共同行动的精神支柱</div>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">使命诠释</div></div>
+    <div class="card card-green">
+      <div class="card-title">🎯 企业使命</div>
+      <div class="card-body" style="font-size:15px;font-weight:700;color:var(--g1);line-height:1.7;">为南国人物质与精神两方面的幸福，为顾客创造健康美味食品，为社会打造健康生活方式而努力奋斗！</div>
+    </div>
+
+    <div class="mission-block">
+      <div class="mission-head" style="background:#1B5E7A;">
+        <span class="mission-head-icon">💰</span>
+        <span class="mission-head-title">物质幸福</span>
+      </div>
+      <div class="mission-body">
+        <p>用勤劳与汗水换取薪酬福利后，收获的那份稳稳的生活安心。为了实现个人收入稳步提升，就必须凝聚全员力量：聚焦产品创新、挑战高目标；同时开源节流、优化生产流程，创造丰厚利润。</p>
+        <p><strong>幸福是大家一起埋头实干、并肩打拼出来的。</strong></p>
+      </div>
+    </div>
+
+    <div class="mission-block">
+      <div class="mission-head" style="background:#6B3F8A;">
+        <span class="mission-head-icon">✨</span>
+        <span class="mission-head-title">精神幸福</span>
+      </div>
+      <div class="mission-body">
+        <p>始终对工作和生活抱有热忱，在奋斗里实现自我价值、提升专业能力，成长为独当一面的岗位专家。</p>
+        <p>敢闯敢拼、心怀感恩、乐于利他，始终躬身自省，以谦卑立身，以正直行事。</p>
+      </div>
+    </div>
+
+    <div class="mission-block">
+      <div class="mission-head" style="background:var(--g2);">
+        <span class="mission-head-icon">🌿</span>
+        <span class="mission-head-title">健康五好生活方式</span>
+      </div>
+      <div class="mission-body">
+        <p>❤️ <strong>心态好</strong>：调节情绪，心理平衡</p>
+        <p>🍱 <strong>饮食好</strong>：均衡营养，科学搭配</p>
+        <p>🏃 <strong>运动好</strong>：规律锻炼，动静结合</p>
+        <p>😴 <strong>睡眠好</strong>：规律作息，优质睡眠</p>
+        <p>🌱 <strong>环境好</strong>：新鲜空气，优质水源</p>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">愿景诠释</div></div>
+    <div class="card card-green">
+      <div class="card-title">🔭 企业愿景</div>
+      <div class="card-body" style="font-size:16px;font-weight:700;color:var(--g1);">聚焦健康营养食品，筑就健康幸福企业！</div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌾 健康营养食品</div>
+      <div class="card-body"><p>紧跟"健康中国"战略，将"营养适配""天然安全""功能赋能"作为产品研发核心准则。从源头甄选优质天然原料，拒绝有害添加，让每一款产品都成为健康的载体。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏢 健康幸福企业</div>
+      <div class="card-body"><p>员工身心安康、企业经营健康的双向赋能发展共同体，终极目标是打造持续幸福的高收益企业。用匠心守护品质，用责任传递健康，成为推动全民健康生活的中坚力量！</p></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">价值观 · 五心</div></div>
+    <div class="card card-gold">
+      <div class="card-title">⭐ 企业价值观</div>
+      <div class="card-body" style="font-size:18px;font-weight:800;letter-spacing:5px;color:var(--g1);">爱心·用心·恒心·虚心·诚心</div>
+    </div>
+
+    <div class="value-card">
+      <div class="value-head">
+        <div class="value-icon-box" style="background:#FDECEA;">❤️</div>
+        <div><div class="value-name" style="color:#C62828;">爱心</div><div class="value-essence">本质：利他——超越利己，主动创造价值</div></div>
+      </div>
+      <ul class="value-list">
+        <li>关注情绪困境，倾听陪伴暖心</li>
+        <li>参与公益利他，传递正向能量</li>
+        <li>帮扶职场新人，分享经验资源</li>
+        <li>尊重所有个体，无差善待他人</li>
+        <li>主动伸出援手，助力他人难题</li>
+        <li>包容他人不足，善意化解矛盾</li>
+      </ul>
+    </div>
+
+    <div class="value-card">
+      <div class="value-head">
+        <div class="value-icon-box" style="background:#E3F2FD;">🎯</div>
+        <div><div class="value-name" style="color:#1565C0;">用心</div><div class="value-essence">本质：将平凡工作做到极致，细节创价值</div></div>
+      </div>
+      <ul class="value-list">
+        <li>洞悉客户需求，全心服务</li>
+        <li>秉持完美主义，细节零疏漏</li>
+        <li>今日事今日毕，不拖延敷衍</li>
+        <li>换位思考共情，预判他人需求</li>
+        <li>工作后必复盘，沉淀经验教训</li>
+        <li>主动学习精进，提升业务水平</li>
+      </ul>
+    </div>
+
+    <div class="value-card">
+      <div class="value-head">
+        <div class="value-icon-box" style="background:#F3E5F5;">🔥</div>
+        <div><div class="value-name" style="color:#6A1B9A;">恒心</div><div class="value-essence">本质：在正确方向上坚守，持续精进</div></div>
+      </div>
+      <ul class="value-list">
+        <li>直面工作困境，不逃避不推诿责任</li>
+        <li>每日精进读书，保持终身学习习惯</li>
+        <li>坚守正道初心，不为短期利益动摇</li>
+        <li>遭遇挫折不弃，复盘优化再战不馁</li>
+      </ul>
+    </div>
+
+    <div class="value-card">
+      <div class="value-head">
+        <div class="value-icon-box" style="background:#E8F5E9;">🙏</div>
+        <div><div class="value-name" style="color:#2E7D32;">虚心</div><div class="value-essence">本质：以谦卑之心接纳他人智慧</div></div>
+      </div>
+      <ul class="value-list">
+        <li>向优秀同事请教，学方法长本领</li>
+        <li>倾听客户反馈，纳建议促改进</li>
+        <li>放下身份偏见，向下属新人取经</li>
+        <li>直面批评意见，先反思不反驳</li>
+        <li>取得成绩不骄，找短板再精进</li>
+        <li>常怀感恩之心，不独占团队功劳</li>
+      </ul>
+    </div>
+
+    <div class="value-card">
+      <div class="value-head">
+        <div class="value-icon-box" style="background:#FFF8E1;">⚖️</div>
+        <div><div class="value-name" style="color:#E65100;">诚心</div><div class="value-essence">本质：坚守正道，言行一致，以真诚赢信任</div></div>
+      </div>
+      <ul class="value-list">
+        <li>工作坦诚沟通，不隐瞒、不推诿</li>
+        <li>信守承诺，言出必行，不食言</li>
+        <li>勇于承认错误，不找借口，主动担责</li>
+        <li>对待工作实事求是，不夸大、不造假</li>
+        <li>坚持原则底线，不为利益妥协</li>
+        <li>言行一致，心口如一</li>
+      </ul>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">经营理念</div></div>
+    <div class="card card-gold">
+      <div class="card-title">💼 经营理念</div>
+      <div class="card-body" style="font-size:16px;font-weight:800;letter-spacing:3px;color:var(--g1);">利人为本 · 品质第一<br>诚信经营 · 创新发展</div>
+    </div>
+    <div class="num-list">
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">人</div><div class="num-content"><div class="num-title">利人为本</div><div class="num-desc">对内，为员工搭建成长平台、保障物质与精神双重幸福；对外，为消费者提供健康美味的产品，以利他之心行发展之路，实现企业与员工、顾客、社会的共生共赢。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);">质</div><div class="num-content"><div class="num-title">品质第一</div><div class="num-desc">严守标准底线，不打折扣；聚焦细节把控，做到"不放过任何一个瑕疵"；哪怕微小的品质隐患，也以"零容忍"的态度彻底解决。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#1B5E7A;">信</div><div class="num-content"><div class="num-title">诚信经营</div><div class="num-desc">对员工坦诚公正；对消费者不夸大宣传；对合作伙伴信守承诺、互利共赢，构建稳定可靠的产业链生态。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#6B3F8A;">新</div><div class="num-content"><div class="num-title">创新发展</div><div class="num-desc">提升专业技能、打破固有思维；攻克技术难关、探索营销新模式；推进流程优化、实现服务升级。</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第二章 ═══════════════ -->
+<section id="ch2" class="bg-white">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#B7860B,#D4A820);">⚙️</div>
+      <div>
+        <div class="chapter-num">Chapter 02</div>
+        <div class="chapter-title">经营法则与方法论</div>
+        <div class="chapter-desc">南国原则十二条、稻盛哲学、六项精进、成功方程式及核心管理原则</div>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">南国企业经营原则十二条</div></div>
+    <div class="num-list">
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">01</div><div class="num-content"><div class="num-title">不忘初心，牢记使命</div><div class="num-desc">为客户创造价值，为员工谋求幸福，为社会承担责任。无论市场如何变化，这份初心坚定不移。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">02</div><div class="num-content"><div class="num-title">合法经营，廉洁自律</div><div class="num-desc">这是企业生存的底线，每一位同仁都要将合规意识刻进骨子里，让南国和大家在阳光下健康成长。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">03</div><div class="num-content"><div class="num-title">明确目标，责任到人</div><div class="num-desc">形成"人人有目标，事事有担当，件件有着落"的局面，杜绝推诿扯皮，确保各项工作精准落地。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">04</div><div class="num-content"><div class="num-title">定价是经营者的责任</div><div class="num-desc">每一次定价要兼顾市场需求、成本控制与价值体现，以公道定价赢得市场的长久信任。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">05</div><div class="num-content"><div class="num-title">销售最大化，费用最小化</div><div class="num-desc">树立"人人都是经营者"的意识，前端拓市场提销量，后端控成本提效率，把每一分钱都用在刀刃上。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">06</div><div class="num-content"><div class="num-title">强烈的愿望，燃烧的斗魂</div><div class="num-desc">唯有对目标极度渴望，对事业满怀激情，才能在困境中突破，在竞争中领先。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">07</div><div class="num-content"><div class="num-title">付出不亚于任何人的努力</div><div class="num-desc">市场没有安逸，我们要以超越常人的努力去拼搏，去抢占先机。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">08</div><div class="num-content"><div class="num-title">顾客至上，极致服务</div><div class="num-desc">从研发到售后，每一个环节都以客户需求为导向，用有温度、高品质的服务留住客户，赢得口碑。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">09</div><div class="num-content"><div class="num-title">不断创新，提升价值</div><div class="num-desc">在技术、产品、模式、管理上持续突破，以创新打破瓶颈，用价值巩固优势，保持行业领先竞争力。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">10</div><div class="num-content"><div class="num-title">乐观向上，团结友爱</div><div class="num-desc">保持乐观积极的心态，凝聚团队力量，互帮互助，众志成城，才能形成无坚不摧的战斗力。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">11</div><div class="num-content"><div class="num-title">公平公正，奖惩分明</div><div class="num-desc">营造"实干实得，比学赶超"的良好氛围，对努力做事的给予认可，对推诿躺平者严格对待。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g1);">12</div><div class="num-content"><div class="num-title">恪守承诺，勇于担当</div><div class="num-desc">对员工、客户、对社会的承诺，要全力以赴兑现；面对困难要敢于挺身而出，诠释南国的胸怀与担当。</div></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">稻盛经营十二条</div></div>
+    <div class="card card-gold">
+      <div class="card-body"><p>稻盛和夫的经营哲学是南国经营理念的重要思想来源。"敬天爱人""利他则久"的核心理念，与南国使命高度契合，是全体南国人的修炼指南。</p></div>
+    </div>
+    <div class="num-list">
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">一</div><div class="num-content"><div class="num-title">明确事业的目的意义</div><div class="num-desc">树立光明正大、符合大义名分、崇高的事业目的。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">二</div><div class="num-content"><div class="num-title">设立具体的目标</div><div class="num-desc">所设目标随时与员工共有。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">三</div><div class="num-content"><div class="num-title">胸中怀有强烈的愿望</div><div class="num-desc">要怀有渗透到潜意识的强烈而持久的愿望。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">四</div><div class="num-content"><div class="num-title">付出不亚于任何人的努力</div><div class="num-desc">一步一步、扎扎实实、坚持不懈地做好具体的工作。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">五</div><div class="num-content"><div class="num-title">销售最大化，经费最小化</div><div class="num-desc">利润无需强求，量入为出，利润随之而来。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">六</div><div class="num-content"><div class="num-title">定价即经营</div><div class="num-desc">价格应定在客户乐意接受、公司又盈利的交汇点上。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">七</div><div class="num-content"><div class="num-title">经营取决于坚强的意志</div><div class="num-desc">经营需要洞穿岩石般的坚强意志。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">八</div><div class="num-content"><div class="num-title">燃烧的斗魂</div><div class="num-desc">经营需要强烈的斗争心，其程度不亚于任何格斗。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">九</div><div class="num-content"><div class="num-title">临事有勇</div><div class="num-desc">不能有卑怯的举止。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:12px;">十</div><div class="num-content"><div class="num-title">不断从事创造性的工作</div><div class="num-desc">明天胜过今天，后天胜过明天，不断琢磨，精益求精。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:11px;">十一</div><div class="num-content"><div class="num-title">以关怀之心，诚实处事</div><div class="num-desc">买卖是双方的，生意各方都得利，皆大欢喜。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--gold);font-size:11px;">十二</div><div class="num-content"><div class="num-title">保持乐观向上的态度</div><div class="num-desc">既然从事了经营，就不要害怕各种课题接踵而来，问题越困难，越不能失去梦想和希望。</div></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">六项精进</div></div>
+    <div class="num-list">
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">一</div><div class="num-content"><div class="num-title">付出不亚于任何人的努力</div><div class="num-desc">努力钻研，比谁都刻苦，锲而不舍、持续不断、精益求精。有闲工夫发牢骚，不如前进一步，哪怕只是一寸。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">二</div><div class="num-content"><div class="num-title">要谦虚，不要骄傲</div><div class="num-desc">"谦受益"是中国古话。谦虚的心能唤来幸福，还能提升心性。才能是上天所赐，将才能用于"公"是第一义。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">三</div><div class="num-content"><div class="num-title">要每天反省</div><div class="num-desc">每天检点自己的思想和行为，直视自我：是不是自私自利？有没有卑怯的举止？有错即改。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">四</div><div class="num-content"><div class="num-title">活着，就要感谢</div><div class="num-desc">滴水之恩，不忘相报。活着，就已经是幸福，"感谢之心"像地下水一样，滋润着道德观的根基。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">五</div><div class="num-content"><div class="num-title">积善行，思利他</div><div class="num-desc">积善之家，必有余庆。与人为善，言行之间留意关爱别人。真正为对方好，才是大善。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:#8B6508;">六</div><div class="num-content"><div class="num-title">不要有感性的烦恼</div><div class="num-desc">不要烦恼，不要焦躁。正面面对困难，硬着头皮顶住。不忘初衷，努力做好该做的事。</div></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">成功方程式</div></div>
+    <div class="formula-box">
+      <div style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.35);margin-bottom:12px;">SUCCESS FORMULA</div>
+      <div class="formula-eq">
+        人生结果 <span class="op">=</span><br>
+        <span class="var">思维方式</span> <span class="op">×</span> <span class="var">热情</span> <span class="op">×</span> <span class="var">能力</span>
+      </div>
+      <div class="formula-factors">
+        <div class="factor"><div class="factor-circle">思维<br>方式</div><div class="factor-name">决定方向</div></div>
+        <div class="factor"><div class="factor-circle">热情</div><div class="factor-name">持久动力</div></div>
+        <div class="factor"><div class="factor-circle">能力</div><div class="factor-name">成就高度</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>思维方式</strong>决定人生方向——正向思维让人在困境中看到希望，是善良还是邪恶，是利他还是自私，这个方向决定了我们人生的航程。</p>
+        <p><strong>热情</strong>是动力的源泉——那些能将热情延至山顶的人，才能历经挑战最终登顶。</p>
+        <p><strong>能力</strong>决定成就高度——能力不是与生俱来的，是在挑战目标的过程中不断提升的。</p>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">核心经营管理原则</div></div>
+    <div class="num-list">
+      <div class="num-item"><div class="num-badge" style="background:var(--g2);font-size:11px;">销售</div><div class="num-content"><div class="num-title">销售最大化·费用最小化</div><div class="num-desc">利润就是销售额与费用的差额。销售要开发新客群、提供超出期望的产品；费用要贯彻"干毛巾也要拧出水"的精神。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g2);font-size:11px;">利润</div><div class="num-content"><div class="num-title">正大光明地追求利润</div><div class="num-desc">通过勤奋与辛劳所赚取的利润，旨在促进南国人的物质与精神幸福，我们应对此感到自豪。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g2);font-size:11px;">数字</div><div class="num-content"><div class="num-title">用正确的数字说话</div><div class="num-desc">正确的数字为决策提供坚实依据，如实反映问题所在。必须贯彻"一一对应"和"双重确认"的原则。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g2);font-size:11px;">现金</div><div class="num-content"><div class="num-title">现金流是生命线</div><div class="num-desc">发货后及时跟进开票、应收账款要及时收回，重视预算管理，保障现金流健康稳定。</div></div></div>
+      <div class="num-item"><div class="num-badge" style="background:var(--g2);font-size:11px;">现场</div><div class="num-content"><div class="num-title">贯彻现场主义</div><div class="num-desc">"现场有神灵"，没有躬身入局到现场，就不可能为客户提供完美的产品和服务。适用于一切部门。</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第三章 ═══════════════ -->
+<section id="ch3" class="bg-gray">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#1B5E7A,#2980B9);">📖</div>
+      <div>
+        <div class="chapter-num">Chapter 03</div>
+        <div class="chapter-title">品牌故事与发展历程</div>
+        <div class="chapter-desc">从1992到2025，三十四年奋斗史</div>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">南国实业发展历程</div></div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">1992年</div><div class="tl-text">"南山公司"注册成立，"南国"牌兴隆咖啡同步上市销售。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">1994年</div><div class="tl-text">刘汉惜董事长带领南国椰奶咖啡进军上海市场，为品牌拓展岛外市场筑牢根基。</div></div></div>
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">1994-1995年</div><div class="tl-text"><strong>中国第一包速溶椰子粉</strong>成功面市，开创速溶椰子粉新品类。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">1999年</div><div class="tl-text">海南南国食品实业有限公司正式成立。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2001年</div><div class="tl-text">引进全自动糖果生产线，正式告别手工生产时代。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2002-2004年</div><div class="tl-text">全面拉开全国市场布局，进驻沃尔玛、家乐福、大润发。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2006-2007年</div><div class="tl-text">推出第二代纯椰子粉，斩获国家天然椰子粉发明专利。</div></div></div>
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">2010年</div><div class="tl-text">获评上海世博会特许生产商与零售商；"南国"商标认定为"<strong>中国驰名商标</strong>"。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2011年</div><div class="tl-text">归侨文化景区——巴厘村正式开业。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2012年</div><div class="tl-text">南国食品乔迁新厂区；南国健康产业园区正式动工。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2013年</div><div class="tl-text">刘汉惜董事长荣获"全国轻工行业劳动模范"及"全国道德模范提名奖"。</div></div></div>
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">2014年</div><div class="tl-text">海南南国健康产业有限公司注册成立。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2015年</div><div class="tl-text">南国中心交付使用，南国人住进了集团精心打造的温暖家园。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2016年</div><div class="tl-text">相继斩获软质糖、椰香薄饼两项国家发明专利。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2018年</div><div class="tl-text">推出第三代椰子营养粉，更适配老人及儿童消费群体。</div></div></div>
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">2022年</div><div class="tl-text">斥资数千万研发的<strong>南国营养素</strong>隆重上市，面向慢性疾病及免疫力较低的特殊人群。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2023年</div><div class="tl-text">琼中县购入百亩园地，打造功能饮料加工基地。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-body"><div class="tl-year">2024年</div><div class="tl-text">椰风海韵驿站在文昌市落地，融合椰文化与海洋文化。</div></div></div>
+      <div class="tl-item"><div class="tl-dot big"></div><div class="tl-body"><div class="tl-year">2025年</div><div class="tl-text">南国特色食品生产基地开工，打造集研发、生产、仓储、物流于一体的<strong>智能化生产基地</strong>。</div></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">中国第一包椰子粉诞生记</div></div>
+    <div class="card">
+      <div class="card-body">
+        <p>1994年春，成都糖酒会上，刘汉惜看到杭州西湖藕粉展台上的热闹，喝下一杯冲泡好的藕粉，一个大胆念头涌现：</p>
+      </div>
+    </div>
+    <div class="quote-box">
+      "莲藕能做固体饮料，椰子肉为什么不行？"<br>
+      彼时市面上可直接饮用的椰子粉尚属空白。
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p>为筹措资金，刘汉惜<strong>抵押房产、银行贷款，再向弟弟借款</strong>，终于请来美国专家。海南酷暑中，专家们汗透衣衫仍紧盯试管，一周后留下核心配方离去。</p>
+        <p>此后半年，团队日夜奋战，反复调试配方。当第一勺白色粉末倒入凉水瞬间融化，甘醇椰香弥漫时——</p>
+      </div>
+    </div>
+    <div class="quote-box" style="text-align:center;font-size:16px;font-weight:700;">
+      <strong>"成功了！"</strong><br>刘汉惜热泪纵横。
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p>1998年斩获全国食品饮料博览会金奖；2006年，"一冲就是椰子汁"的广告语登陆央视，<strong>中国第一包速溶椰子粉，香飘大江南北。</strong></p>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">揭开南国健康密码</div></div>
+    <div class="card">
+      <div class="card-body">
+        <p>南国食品的健康密码，藏在刘汉惜践行稻盛"敬天爱人"经营哲学的初心与行动中。"利他则久"理念三十载未曾动摇。</p>
+        <p>"食"字底下是"良"，这份良心让刘汉惜在利益面前坚守底线：<strong>放弃品质不稳的生产线，损失数百万亦不妥协；新品上市必亲尝二十余次</strong>——"自己不敢吃便不卖给顾客"的执念，正是对消费者最深的敬畏。</p>
+        <p>2004年的肺结核病痛，让他亲身体悟生命脆弱；2013年家人因营养素重获健康，更坚定了他"用营养产品守护他人健康"的利他之心。</p>
+      </div>
+    </div>
+    <div class="quote-box"><strong>以心为本，利他方得长久。</strong><br>——稻盛和夫</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第四章 ═══════════════ -->
+<section id="ch4" class="bg-white">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#6B3F8A,#9B59B6);">🔮</div>
+      <div>
+        <div class="chapter-num">Chapter 04</div>
+        <div class="chapter-title">桃花源·美好愿景</div>
+        <div class="chapter-desc">我们坚信的未来——四个维度的美好承诺</div>
+      </div>
+    </div>
+
+    <div class="dream-tabs">
+      <div class="dream-tab active" onclick="switchDream('emp',this)">👥 员工篇</div>
+      <div class="dream-tab" onclick="switchDream('cus',this)">💚 客户篇</div>
+      <div class="dream-tab" onclick="switchDream('ent',this)">🏢 企业篇</div>
+      <div class="dream-tab" onclick="switchDream('soc',this)">🌏 社会篇</div>
+    </div>
+
+    <div id="dp-emp" class="dream-panel active">
+      <div class="dream-item"><div class="dream-icon">💰</div><div class="dream-text"><strong>坚信有一天：</strong>我们的伙伴收入能处于中国食品行业领先水平，我们的伙伴都能拥有属于自己的舒适住宅，有车出行方便无忧。</div></div>
+      <div class="dream-item"><div class="dream-icon">🏫</div><div class="dream-text"><strong>坚信有一天：</strong>建成集团子弟学校、医院、健康体验管理中心、健身房、心理咨询室、老年康养中心等生活配套综合体。</div></div>
+      <div class="dream-item"><div class="dream-icon">🤝</div><div class="dream-text"><strong>坚信有一天：</strong>伙伴们在工作中，每天都能感受到来自同事与客户的尊重和帮助，会为自己是南国人而深感自豪，拥有坚实的底气。</div></div>
+    </div>
+    <div id="dp-cus" class="dream-panel">
+      <div class="dream-item"><div class="dream-icon">🥥</div><div class="dream-text"><strong>坚信有一天：</strong>每一位选择南国食品的消费者，收获由内而外的健康与活力，让"吃得安心、吃得健康"成为触手可及的日常。</div></div>
+      <div class="dream-item"><div class="dream-icon">🌍</div><div class="dream-text"><strong>坚信有一天：</strong>南国椰味食品走向全世界，感受中国味道的温暖与独特。</div></div>
+      <div class="dream-item"><div class="dream-icon">🌱</div><div class="dream-text"><strong>坚信有一天：</strong>我们与每一位客户不再是简单的合作，而是彼此成就的生态共同体，让这份联结成为持续向前的力量。</div></div>
+    </div>
+    <div id="dp-ent" class="dream-panel">
+      <div class="dream-item"><div class="dream-icon">🌐</div><div class="dream-text"><strong>坚信有一天：</strong>南国椰味食品进全球家庭，让这份源自自然的纯粹美味，成为跨越文化与地域的生活默契。</div></div>
+      <div class="dream-item"><div class="dream-icon">🏆</div><div class="dream-text"><strong>坚信有一天：</strong>南国实业成为世界级健康食品领军品牌。</div></div>
+      <div class="dream-item"><div class="dream-icon">♻️</div><div class="dream-text"><strong>坚信有一天：</strong>以员工成长、用户信赖与社会责任，铸就可持续发展的幸福企业。</div></div>
+    </div>
+    <div id="dp-soc" class="dream-panel">
+      <div class="dream-item"><div class="dream-icon">🎓</div><div class="dream-text"><strong>坚信有一天：</strong>南国实业为社会培养大量有用人才。</div></div>
+      <div class="dream-item"><div class="dream-icon">💝</div><div class="dream-text"><strong>坚信有一天：</strong>所有南国人都成为爱的天使，为社会做出更多贡献。</div></div>
+      <div class="dream-item"><div class="dream-icon">🛡️</div><div class="dream-text"><strong>坚信有一天：</strong>食品行业在南国的影响下，一同成为全民健康的守护者。</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第五章 ═══════════════ -->
+<section id="ch5" class="bg-gray">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#6B3F8A,#9B59B6);">💡</div>
+      <div>
+        <div class="chapter-num">Chapter 05</div>
+        <div class="chapter-title">人生智慧散文</div>
+        <div class="chapter-desc">点击标题展开阅读全文</div>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">修身与成长</div></div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">日日是新日</div><span class="essay-head-tag">心态 · 更新</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>时光流转、岁月更替，心境也会焕然一新。心境的更新，实乃可喜可贺之事。所以，并不是只有新年才值得庆贺，心境的更新任何时候也都是可喜可贺的。</p><p>无论今天还是昨日，大自然的形态没有发生任何变化，和风照日依旧。然而心境一旦更新，所见所闻都将焕然一新。</p><p>往者不可谏，来者犹可追，不要把昨日的劳顿带到今天。所以，每天都是崭新的，都是新的开始。如果做到了日日是新日，也就做到了日日是好日。</p><p>亲爱的朋友们，让我们以饱满的热情，来迎接每个崭新的一天吧！</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">拓宽视野</div><span class="essay-head-tag">成长 · 格局</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>社会是广阔的，如果以狭隘的视野来看待社会，只能走进死胡同；人生是漫长的，如果以狭隘的视野行走其中，就会举步维艰。</p><p>视野狭隘之人，不仅自己的处事之道存在谬误，也会给他人带来麻烦。如果原来是10度，就把它拓宽到15度；如果原来是15度，就把它拓宽到20度。</p><p>我们真正需要做的是能够让自己的视野扩展到360度环顾一周，这才是真正意义上的融会贯通，也就是达到了超脱的境界。</p><p>让我们一起拓宽视野，为了创造我们共同的繁荣、和平与幸福，每个人都要积极地去拓宽自己的视野。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">心灵之镜</div><span class="essay-head-tag">自省 · 谦逊</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>人如果想要正衣冠，首先要站到镜子前面。镜子是公正的，它能如实映照出一个人原本的形象。</p><p>镜子尽管可以正衣冠，却无法映照出心灵的扭曲。只要拥有一颗求索之心和谦逊之心，心灵之镜就会随处高悬。</p><p>自己周围的人和物，均是自己心灵的映照，是自己的心灵之镜。只要拥有一颗谦逊之心、纯洁之心，周围所有的人和物，都能成为自己的心灵之镜。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">各尽所能</div><span class="essay-head-tag">自我认知 · 和谐</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>让松树开出樱花是不可能的，让牛发出马的嘶鸣也是不可能的。松树只能是松树，樱花只能是樱花。尽管大自然中的每个个体都不是完美无缺的，但它们都能按照自己的本性，发挥着自己的作用，相互取长补短，在和谐之中形成了丰富多彩的美。</p><p>人也同样如此。尽管每个人都不是完美无缺的，但只要按照自己的本性，最大限度地发挥自身的本领，就能够在和谐中创造自己和他人的幸福。</p><p><strong>各安其分，各尽所能，繁荣的原理就是如此简单。</strong></p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">勤学好问</div><span class="essay-head-tag">学习 · 好奇心</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>孩子们的心天真无邪，碰到不懂的事情，他们总会问"这是为什么"。就是在这一过程中，他们一天天地成长起来。</p><p>大人也是如此。现在的社会日新月异，我们需要经常询问"为什么"，然后对于得到的答案自己进行思考，或向他人求教。</p><p>而一旦出现疏于求教，今天如同昨日，明日如同今日，十年如一日不思进取的情形，人的进步就会停止，社会的进步也会停止。</p><p><strong>繁荣是从问一声"为什么"开始的。</strong></p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">《大学》选读</div><span class="essay-head-tag">修身 · 经典</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>大学之道，在明明德，在亲民，在止于至善。知止而后有定，定而后能静，静而后能安，安而后能虑，虑而后能得。</p><p>物有本末，事有终始，知所先后，则近道矣。</p><p>古之欲明明德于天下者，先治其国；欲治其国者，先齐其家；欲齐其家者，先修其身；欲修其身者，先正其心；欲正其心者，先诚其意；欲诚其意者，先致其知，致知在格物。</p><p><strong>自天子以至于庶人，壹是皆以修身为本。</strong></p></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">工作与事业</div></div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">竭尽全力</div><span class="essay-head-tag">投入 · 满足感</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>无论干什么工作，只要自己付出了最大努力，就会不由自主地产生自我体恤、自我鼓励的念头。</p><p>今天一整天确实干得不错，干得漂亮！想到这些，尽管有些疲惫，但吃起饭来感觉很香，情绪也得到了舒缓。这种心情是包括金钱在内的任何东西都换不来的。</p><p><strong>事情的成败固然重要，但比成败更为重要的，是自己的心中应该拥有竭尽全力的信念。</strong></p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">工作就是决胜负</div><span class="essay-head-tag">斗志 · 激情</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>干一项工作，实际上是在决一场胜负，每时每刻都是决定胜负的过程，每个人都应该以一决雌雄的气魄对待每天的工作。</p><p>在懈怠状态之下，今天不就是昨天的重复嘛；明天，与今天相比也不会有太大变化吧……这样一来，好的想法就不会出现，创新与开拓也将停滞不前。</p><p>只有以一决胜负的最大勇气面对工作，才能创造真正的繁荣。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">一丝不苟</div><span class="essay-head-tag">细节 · 信任</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>受命去做一件事情并完成，做到这些已经很好。不过，你是否会把自己完成的情况，同样准确无误地向命令者汇报呢？</p><p>两者之间用心的这种细微之差，决定了他们在信誉度方面存在天壤之别。</p><p>更为重要的，是对于那些被认为琐碎、不起眼的事物，仍以一种一丝不苟的态度去面对的精神。</p><p>从琐碎的、不起眼的事情做起，在一点一滴的积累中注入自己的智慧和感受，只有这样，才能赢得别人坚定不移的信任。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">改进工作的方式</div><span class="essay-head-tag">效率 · 创新</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>挥汗如雨地工作是可敬的。然而，如果总是这样工作，则是一种缺乏智慧的表现。这等同于今天还像过去那样，放着火车不坐，吭哧吭哧一步不停地沿着海岸线从头走到尾。</p><p>要是比过去少干一个小时，却能取得比过去更好的成果，则更加宝贵，因为这体现了人们工作方式的进步。</p><p>挥汗如雨的工作形象值得称道，而额头不带半点汗滴的轻轻松松的工作形象更值得称道。这不是懈怠，而是经过认真琢磨后的工作享受。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">满怀热情</div><span class="essay-head-tag">热情 · 驱动力</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>经营是一件让人捉摸不透的事，工作也同样如此，就算你干了几十年，依然还是觉得它不可思议。它们深不可测，广阔无际，有着无穷的构想，有着无穷的方式。</p><p>"无论如何，我都要上二楼去看看！"这种强烈的欲望最终让人发明了梯子，并想到了去修建楼梯。抱有"上不上都无所谓"这种念头的人，头脑中是不会出现梯子的。</p><p><strong>光有才干是造不出梯子的，能造出梯子的是热情。</strong></p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">判断与执行</div><span class="essay-head-tag">决策 · 执行力</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>无论做什么，都需要率先进行判断。我们普通人，充其量只能达到60%的正确率。不过，如果对自己的判断有60%的把握，这样的判断基本上可以认为是稳妥的。</p><p>之后，要看的就是勇气和执行力。无论多么准确的判断，要是缺乏付诸实施的勇气和执行力，就将失去全部意义。</p><p><strong>通过60%准确的判断，勇气和执行力将创造出100%实实在在的成果。</strong></p></div></div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">处世与社会</div></div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">付出与回报</div><span class="essay-head-tag">奉献 · 社会</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>付出与回报，是这个社会的规则，通过将自己持有之物给予他人，并从他人之处接受与之相称之物，社会由此运转起来。</p><p>所以，如果你希望得到更多的回报，只需更多地付出即可。</p><p>无论什么人，只要认真挖掘，都能找出其独有的宝贵天分，并可以运用这种天分奉献社会。为了创造共同繁荣的社会，人们都应该学会运用自己的才能全心全意相互奉献。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">百折不挠</div><span class="essay-head-tag">韧性 · 不屈</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>社会是宽广的，人生是漫长的。困难、麻烦、痛苦、艰辛……百种滋味都有，只是程度不同而已，受煎熬的并非只有你。</p><p>果断行事，鬼神也会让路。不把困难放在心上，创新思路，坚定信念，迈步向前，困难或许反而会成为你崛起的基石。</p><p><strong>重要的是想法、是决心，是百折不挠的精神。</strong></p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">静待之心</div><span class="essay-head-tag">时机 · 积累</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>无论你如何焦躁，时机未到事业不会成功。冬天来了，春天就不远了，百花会静静地等待春天的到来，这是一种对大自然的恩惠深信不疑的心态。</p><p>成就大业之人，一定都拥有一颗静待时机之心，他们不焦不躁，静候时机来临的那一天。静待春天的百花，没有一刻不在积蓄着力量，如果没有积蓄起力量，即便时机到来也无法成就大业。</p><p>对于扎扎实实自我积蓄力量之人而言，时机一定会到来，幸福一定会到来！</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">忧虑也是好事</div><span class="essay-head-tag">心态 · 转化</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>面对烦恼，不能心存畏惧，不能胆怯退缩，"忧虑也是好事"，担心或者忧虑也是创造新事物的一种转机。</p><p>如果这样一想，就可以堂堂正正地面对忧虑，进而集中力量和智慧，最终一定可以创造出意想不到的新成果，开辟出意想不到的新途径。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">否极泰来</div><span class="essay-head-tag">逆境 · 希望</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>广阔的社会，漫长的人生，并非总是充满了令人心情愉悦之事。然而，这一切都弥足珍贵。只有哀怨，才能让我们体会到人生的深刻；只有窘境，才能让我们体味世间的各种况味。</p><p>身陷窘境，不正是接受历练的宝贵机遇和难得时机吗？这样一想，痛苦之中，就会激发出勇气和干劲。</p><p>当一缕阳光穿破云层照耀人间之时，我们一定能够开拓出一条崭新的道路。在这条道路上，我们将再次满怀信心地向着春天重新出发。</p></div></div>
+    </div>
+
+    <div class="essay-item" onclick="toggleEssay(this)">
+      <div class="essay-head"><div class="essay-head-left"><div class="essay-head-title">缘分</div><span class="essay-head-tag">人际 · 珍惜</span></div><div class="essay-arrow">▼</div></div>
+      <div class="essay-body"><div class="essay-body-inner"><p>是缘分让我们来到这个世界，也是缘分把我们结合在一起。人与人之间，实际上存在一种超越个人意志与希望的深深的缘分的力量。</p><p>正因如此，我们应该更加珍惜这个世界上人与人之间的羁绊，更加认识到它的宝贵之处。在自己的心因不公或不满变得黯淡之前，学会谦虚地去体会缘分带来的喜悦。</p><p>随后，一种可以由黑暗变光明的强大力量就会应运而生。</p></div></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 第六章 ═══════════════ -->
+<section id="ch6" class="bg-white">
+  <div class="chapter">
+    <div class="chapter-header px">
+      <div class="chapter-icon" style="background:linear-gradient(135deg,#1A6A4A,#27AE60);">❤️</div>
+      <div>
+        <div class="chapter-num">Chapter 06</div>
+        <div class="chapter-title">心灵与家庭</div>
+        <div class="chapter-desc">以爱为根，以信仰为翼</div>
+      </div>
+    </div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">《世界因我而美丽》能量朗诵</div></div>
+
+    <div class="reading-item"><div class="reading-num">一</div><div class="reading-text">我知道，我不是因为偶然才来到这个世界的，我是主动想来的，我是因为爱这个世界才来的。所以，我将用全然的爱来接受这个世界，并用全然的爱让世界更加美丽。<strong>我要让世界因我而美丽！</strong></div></div>
+    <div class="reading-item"><div class="reading-num">二</div><div class="reading-text">我知道，我所有的长处都是源于父母祖宗的优秀，但它不是我炫耀和自私的资本，它是上天与祖宗赋予我利益众生的工具。</div></div>
+    <div class="reading-item"><div class="reading-num">三</div><div class="reading-text">我要对自己的生命负责。我知道，决定我生命的主因是我自己。<strong>没有命运，只有选择；没有命运，只有创造，创造生命的喜悦、美好和神奇！</strong></div></div>
+    <div class="reading-item"><div class="reading-num">四</div><div class="reading-text">我活在这个世界，就是为了改变这个世界。我要用全身心的爱来对待今天——每一个人，每一件事，每一株小草，每一粒石子……我要用全身心的爱来迎接美好的明天！</div></div>
+    <div class="reading-item"><div class="reading-num">五</div><div class="reading-text">每个生命都是由身体、大脑和心灵组成的，就像一个礼物，里面比外面珍贵。<strong>我心灵的美德、胸怀、智慧和境界，比大脑里的更珍贵！</strong>所以，我要重视心灵的净化和提升。</div></div>
+    <div class="reading-item"><div class="reading-num">六</div><div class="reading-text">从今天起，我要高高地放飞自己的梦想，积极乐观地生活和学习。上天把一切的主动权交给了我，他从不控制我，从不决定我，他让我自己决定自己的梦想，然后慈悲而无私地帮助我、成就我。</div></div>
+    <div class="reading-item"><div class="reading-num">七-八</div><div class="reading-text">就像天地从来就没有决定一块土地里要长出什么——农夫播种了一粒苹果的种子，天地就会用全部的力量来帮助他长出苹果。<strong>我要成为这世界上一粒最美丽的种子，让世界因我而美丽！</strong></div></div>
+    <div class="reading-item"><div class="reading-num">九-十</div><div class="reading-text">我知道，生命中最珍贵、最强大的就是灵魂，而灵魂的依附和营养就是信仰。所以，我要从现在开始，<strong>立自己的人生原则，从原则升华成信念，再从信念升华成信仰。</strong></div></div>
+    <div class="reading-item"><div class="reading-num">十一-十二</div><div class="reading-text">我今生要把我美好而坚定的信仰传播给那些迷茫的人，让他们也因此觉醒和伟大。<br><strong>我要带着希望，怀揣梦想，我要让世界因我而美丽！我要让世界因我而美丽！我要让世界因我而美丽！</strong></div></div>
+
+    <div class="sec-label"><div class="sec-bar"></div><div class="sec-text">《家庭自律规》</div></div>
+
+    <div class="reading-item"><div class="reading-num">1</div><div class="reading-text"><strong>从此刻起，</strong>我要多鼓励、赞美家人，而不是批评、指责、埋怨家人。因为我知道只有鼓励和赞美才能带给家人自信和力量！</div></div>
+    <div class="reading-item"><div class="reading-num">2</div><div class="reading-text"><strong>从此刻起，</strong>我要用行动去影响家人，而不是用言语去说教家人。因为我知道家人的行为不是被教导而成，而是靠自己积极正能量的影响。</div></div>
+    <div class="reading-item"><div class="reading-num">3</div><div class="reading-text"><strong>从此刻起，</strong>我要多聆听家人的心声，而不是急于评断家人。因为我知道聆听才是最好的沟通。</div></div>
+    <div class="reading-item"><div class="reading-num">4</div><div class="reading-text"><strong>从此刻起，</strong>我要无条件地去爱家人本来的样子，而不是去爱我要求的样子；因为我知道那是我的想法和自私。</div></div>
+    <div class="reading-item"><div class="reading-num">5</div><div class="reading-text"><strong>从此刻起，</strong>我要学会静下心来与家人平等沟通，而不是居高临下地指使家人。因为我知道强势只会给家人带来更强烈的情绪。</div></div>
+    <div class="reading-item"><div class="reading-num">6</div><div class="reading-text"><strong>从此刻起，</strong>我要用心去陪伴家人，而不是心不在焉地敷衍家人。因为我知道只有真正的陪伴才能让家人感受到爱的温暖。</div></div>
+    <div class="reading-item"><div class="reading-num">7</div><div class="reading-text"><strong>从此刻起，</strong>我要控制自己的情绪，和家人一起安静平和地享受好每一个当下。因为我知道脾气和暴力只代表我的无能和对家人的伤害。</div></div>
+    <div class="reading-item"><div class="reading-num">8</div><div class="reading-text"><strong>从此刻起，</strong>我要积极主动地处理好与家人的关系，创造一个和谐的家庭环境，因为我知道只有家庭关系和睦才是对家人最大的爱。</div></div>
+    <div class="reading-item"><div class="reading-num">9</div><div class="reading-text"><strong>从此刻起，</strong>我要让家人长成他要长成的样子，而不是我期待的样子。因为我知道家人并不属于我，他只是我生命之旅中非常有缘的过客，去完成他自己的梦想和使命。</div></div>
+    <div class="reading-item"><div class="reading-num">10</div><div class="reading-text"><strong>从此刻起，</strong>我要多为家人种善因，行善事。因为我知道种善因，方能结善果，积善之家必有余庆。</div></div>
+    <div class="reading-item"><div class="reading-num">11</div><div class="reading-text"><strong>从此刻起，</strong>我要通过家人的问题，找出我自己的问题，修正我自己。因为我知道家人是上天赐予我协助我修行的天使。</div></div>
+    <div class="reading-item"><div class="reading-num">12-13</div><div class="reading-text"><strong>从此刻起，</strong>我要成为家人生命中最好的朋友，最亲密的伙伴，最慈爱的家人。<br><br><strong>从此刻起，我要升起一颗利他之心！感恩之心！有责任！有担当！因为我深知，大家好才是真的好！</strong></div></div>
+
+    <div class="end-card">
+      <p>家和万事兴！</p>
+      <p>把自己活成一束光，照亮家人前行的路；</p>
+      <p>把和睦当作家里的根，稳稳托起整个家族的兴旺！</p>
+      <p><strong>我要做一个家族觉醒之人，成为家人的榜样！</strong></p>
+      <p style="margin-top:16px;font-size:13px;">小家好了，国家才能更好！<br>从今天起，说到做到、坚持到底，<br>一起奔向幸福美好的生活！</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="page-footer">
+  <strong>南国经营哲学·成长手册</strong><br>
+  海南南国实业集团 · 内部学习资料 · 仅供朗读<br><br>
+  为南国人物质与精神两方面的幸福，<br>
+  为顾客创造健康美味食品，<br>
+  为社会打造健康生活方式而努力奋斗
+</footer>
+
+</div><!-- /page-wrap -->
+
+<!-- 返回顶部 -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// 进度条 + 返回顶部
+window.addEventListener('scroll', function(){
+  var s = document.documentElement.scrollTop;
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('prog').style.width = (s/h*100)+'%';
+  document.getElementById('backTop').classList.toggle('show', s > 400);
+}, {passive:true});
+
+// 抽屉
+function toggleDrawer(){
+  var d = document.getElementById('drawer');
+  var m = document.getElementById('mask');
+  var b = document.getElementById('menuBtn');
+  var open = d.classList.toggle('open');
+  m.classList.toggle('show', open);
+  b.classList.toggle('open', open);
+}
+
+// 导航跳转
+function goto(id){
+  var el = document.getElementById(id);
+  if(el){
+    var top = el.getBoundingClientRect().top + window.scrollY - 60;
+    window.scrollTo({top:top, behavior:'smooth'});
+  }
+  // 关闭抽屉
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('mask').classList.remove('show');
+  document.getElementById('menuBtn').classList.remove('open');
+}
+
+// 桃花源Tab
+function switchDream(id, el){
+  document.querySelectorAll('.dream-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.dream-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('dp-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// 散文手风琴
+function toggleEssay(item){
+  var body = item.querySelector('.essay-body');
+  var isOpen = item.classList.contains('open');
+  // 关闭其他
+  document.querySelectorAll('.essay-item.open').forEach(function(i){
+    i.classList.remove('open');
+    i.querySelector('.essay-body').style.maxHeight = '0';
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    // 滚动到该条目
+    setTimeout(function(){
+      var top = item.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({top:top, behavior:'smooth'});
+    }, 100);
+  }
+}
+</script>
+</body>
+</html>
