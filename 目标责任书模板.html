@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>销售目标责任书 — 海南南国实业集团</title>
+<style>
+/* ── 全局 ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #C8000A;
+  --dred: #A30008;
+  --lred: #FFF0F0;
+  --navy: #1C2D4E;
+  --ink: #1A1A1A;
+  --gray: #555;
+  --lgray: #F5F5F5;
+  --line: #E0E0E0;
+  --white: #FFF;
+}
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: #F0F0F0;
+  line-height: 1.7;
+}
+
+/* ── 打印样式 ── */
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .page { box-shadow: none; margin: 0; max-width: 100%; }
+  input, select, textarea {
+    border: none !important;
+    background: transparent !important;
+    -webkit-appearance: none;
+  }
+  input[type="checkbox"] { -webkit-appearance: checkbox; }
+  .print-hint { display: none; }
+  @page { size: A4; margin: 15mm 18mm 18mm 18mm; }
+}
+
+/* ── 工具栏 ── */
+.toolbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 48px;
+}
+.toolbar-title { color: rgba(255,255,255,.8); font-size: 13px; }
+.toolbar-btns { display: flex; gap: 10px; }
+.btn {
+  padding: 6px 16px; border-radius: 4px; font-size: 13px;
+  cursor: pointer; border: none; font-family: inherit;
+}
+.btn-print { background: var(--red); color: #fff; }
+.btn-print:hover { background: var(--dred); }
+.btn-reset { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.2); }
+.btn-reset:hover { background: rgba(255,255,255,.2); }
+
+/* ── 页面容器 ── */
+.page {
+  max-width: 780px;
+  margin: 64px auto 40px;
+  background: var(--white);
+  box-shadow: 0 4px 24px rgba(0,0,0,.12);
+  padding: 0 0 48px;
+}
+
+/* ── 顶部红色封头 ── */
+.doc-header {
+  background: var(--red);
+  padding: 28px 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header::after {
+  content: "南国";
+  position: absolute; right: -10px; bottom: -20px;
+  font-size: 120px; font-weight: 900;
+  color: rgba(255,255,255,.06);
+  line-height: 1; pointer-events: none;
+}
+.doc-org {
+  font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,.55);
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.doc-title {
+  font-size: 26px; font-weight: 900; color: #fff;
+  letter-spacing: 2px; margin-bottom: 6px;
+}
+.doc-sub { font-size: 13px; color: rgba(255,255,255,.65); }
+.doc-serial {
+  position: absolute; top: 28px; right: 40px;
+  font-size: 12px; color: rgba(255,255,255,.5);
+  text-align: right;
+}
+.doc-serial input {
+  background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,.3);
+  color: rgba(255,255,255,.8); font-size: 12px; width: 130px;
+  outline: none; text-align: center; font-family: inherit;
+}
+
+/* ── 内容区 ── */
+.doc-body { padding: 32px 40px 0; }
+
+/* ── 分区标题 ── */
+.sec-title {
+  font-size: 15px; font-weight: 700; color: var(--red);
+  border-left: 4px solid var(--red);
+  padding-left: 10px; margin: 28px 0 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-title.navy {
+  color: var(--navy); border-left-color: var(--navy);
+}
+
+/* ── 表格 ── */
+table.form-table {
+  width: 100%; border-collapse: collapse;
+  margin-bottom: 4px;
+}
+table.form-table td, table.form-table th {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  vertical-align: middle;
+  font-size: 13.5px;
+}
+table.form-table th {
+  background: var(--lgray);
+  font-weight: 600; color: var(--ink);
+  white-space: nowrap; width: 1%;
+}
+table.form-table td.label {
+  background: var(--lgray);
+  font-weight: 600; white-space: nowrap;
+  width: 120px; color: var(--ink);
+}
+table.form-table td.label.req::after {
+  content: " *"; color: var(--red); font-weight: 700;
+}
+table.form-table thead tr th {
+  background: var(--navy); color: #fff; text-align: center;
+}
+table.form-table thead tr.sub th {
+  background: #EBF0F8; color: var(--navy); font-size: 12px;
+}
+
+/* ── 输入框 ── */
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  border: none; border-bottom: 1.5px solid #CCCCCC;
+  background: transparent; font-family: inherit;
+  font-size: 13.5px; color: var(--ink);
+  outline: none; width: 100%; padding: 2px 4px;
+  transition: border-color .2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-bottom-color: var(--red);
+}
+select { cursor: pointer; }
+textarea { resize: vertical; min-height: 56px; border: 1.5px solid #CCCCCC; border-radius: 2px; padding: 6px 8px; }
+textarea:focus { border-color: var(--red); }
+
+/* ── 金额输入前缀 ── */
+.input-prefix {
+  display: flex; align-items: center; gap: 4px;
+}
+.input-prefix span {
+  color: var(--gray); font-size: 13px; flex-shrink: 0;
+}
+
+/* ── 提成计算区 ── */
+.calc-section {
+  background: var(--lred);
+  border: 1px solid #F0C0C0;
+  padding: 16px 20px; margin: 8px 0 4px;
+  border-radius: 0 0 4px 4px;
+}
+.calc-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--gray); margin: 6px 0;
+}
+.calc-val {
+  font-size: 16px; font-weight: 700; color: var(--red);
+  min-width: 100px;
+}
+.calc-label { color: var(--gray); font-size: 12px; }
+
+/* ── 达成说明区 ── */
+.tier-box {
+  border: 1px solid var(--line); margin: 4px 0;
+}
+.tier-header {
+  background: var(--navy); color: #fff;
+  padding: 8px 14px; font-size: 13px; font-weight: 600;
+}
+.tier-item {
+  display: flex; align-items: flex-start;
+  border-bottom: 1px dashed var(--line); padding: 10px 14px; gap: 12px;
+}
+.tier-item:last-child { border-bottom: none; }
+.tier-dot {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.tier-text { font-size: 13px; color: var(--ink); line-height: 1.6; }
+.tier-text b { color: var(--red); }
+
+/* ── 签字区 ── */
+.sign-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0; border: 1px solid var(--line);
+  margin-top: 4px;
+}
+.sign-cell {
+  padding: 16px 20px;
+  border-right: 1px solid var(--line);
+  min-height: 90px;
+}
+.sign-cell:last-child { border-right: none; }
+.sign-label { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
+.sign-line {
+  border-top: 1px solid var(--ink); margin-top: 32px;
+  padding-top: 6px; font-size: 11px; color: var(--gray);
+  display: flex; justify-content: space-between;
+}
+
+/* ── 条款区 ── */
+.clause {
+  font-size: 12.5px; color: var(--gray); line-height: 1.9;
+  counter-reset: clause;
+}
+.clause-item {
+  display: flex; gap: 6px; margin-bottom: 6px;
+  counter-increment: clause;
+}
+.clause-item::before {
+  content: counter(clause) ".";
+  flex-shrink: 0; color: var(--red); font-weight: 700;
+  min-width: 16px;
+}
+
+/* ── 说明提示 ── */
+.hint {
+  font-size: 11px; color: #AAA; margin-top: 3px;
+  font-style: italic;
+}
+.print-hint {
+  text-align: center; padding: 16px;
+  font-size: 12px; color: #AAA;
+  border-top: 1px dashed var(--line); margin-top: 32px;
+}
+
+/* ── 实时计算结果区 ── */
+.result-band {
+  background: var(--navy); color: #fff;
+  padding: 14px 20px; margin: 12px 0 4px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.result-band .ri { text-align: center; }
+.result-band .ri .rl { font-size: 10px; color: rgba(255,255,255,.55); margin-bottom: 2px; }
+.result-band .ri .rv { font-size: 18px; font-weight: 700; }
+.result-band .ri .rv.gold { color: #FFCC55; }
+
+/* ── 水印 ── */
+.watermark-note {
+  text-align: center; font-size: 11px; color: #CCC;
+  padding: 8px 0 0;
+}
+</style>
+</head>
+<body>
+
+<!-- 工具栏 -->
+<div class="toolbar no-print">
+  <div class="toolbar-title">目标责任书模板 · 海南南国实业集团</div>
+  <div class="toolbar-btns">
+    <button class="btn btn-reset" onclick="resetForm()">重置表单</button>
+    <button class="btn btn-print" onclick="window.print()">🖨 打印 / 导出PDF</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- 封头 -->
+  <div class="doc-header">
+    <div class="doc-org">Hainan Nanguo Industrial Group · Internal Document</div>
+    <div class="doc-title">销售目标责任书</div>
+    <div class="doc-sub">Sales Target Responsibility Agreement · 月度考核 + 年度汇算</div>
+    <div class="doc-serial">
+      编号：<input type="text" id="docNo" placeholder="自动生成" style="width:120px">
+      <br>年度：<input type="text" id="docYear" placeholder="2026" style="width:60px">年
+    </div>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- ① 人员信息 -->
+    <div class="sec-title">一、人员基本信息</div>
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <td class="label req">所属部门</td>
+          <td>
+            <select id="dept">
+              <option value="">— 请选择 —</option>
+              <option>南国食品销售部</option>
+              <option>南国健康事业部</option>
+              <option>电商运营部</option>
+              <option>OEM业务部</option>
+              <option>市场推广部</option>
+              <option>其他部门</option>
+            </select>
+          </td>
+          <td class="label req">姓名</td>
+          <td><input type="text" id="name" placeholder="请填写"></td>
+        </tr>
+        <tr>
+          <td class="label">岗位职务</td>
+          <td>
+            <select id="position">
+              <option value="">— 请选择 —</option>
+              <option>销售专员</option>
+              <option>销售主管</option>
+              <option>区域经理</option>
+              <option>大客户经理</option>
+              <option>电商运营专员</option>
+              <option>渠道拓展专员</option>
+            </select>
+          </td>
+          <td class="label">直属上级</td>
+          <td><input type="text" id="superior" placeholder="请填写"></td>
+        </tr>
+        <tr>
+          <td class="label req">考核年度</td>
+          <td><input type="text" id="year" placeholder="2026"></td>
+          <td class="label req">签订日期</td>
+          <td><input type="date" id="signDate"></td>
+        </tr>
+        <tr>
+          <td class="label">生效日期</td>
+          <td><input type="date" id="startDate"></td>
+          <td class="label">到期日期</td>
+          <td><input type="date" id="endDate"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ② 目标指标 -->
+    <div class="sec-title">二、目标指标设定</div>
+    <table class="form-table">
+      <thead>
+        <tr>
+          <th style="width:22%">指标名称</th>
+          <th style="width:26%">目标值</th>
+          <th style="width:22%">提成比率</th>
+          <th>备注说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label req">基本销售目标</td>
+          <td>
+            <div class="input-prefix">
+              <span>¥</span>
+              <input type="number" id="t-sales" placeholder="0" min="0" oninput="calcAll()" style="font-size:15px;font-weight:600;">
+            </div>
+            <div class="hint">含税销售额，以ERP实际发货金额为准</div>
+          </td>
+          <td>
+            <div class="input-prefix">
+              <input type="number" id="r-sales" placeholder="1.5" min="0" max="100" step="0.1" oninput="calcAll()">
+              <span>%</span>
+            </div>
+            <div class="hint">基础目标销售提成比</div>
+          </td>
+          <td>
+            <input type="text" id="note-sales" placeholder="如：按渠道/产品线分解可另附件">
+          </td>
+        </tr>
+        <tr>
+          <td class="label req">基本销售目标利润</td>
+          <td>
+            <div class="input-prefix">
+              <span>¥</span>
+              <input type="number" id="t-profit" placeholder="0" min="0" oninput="calcAll()" style="font-size:15px;font-weight:600;">
+            </div>
+            <div class="hint">财务核算净利润，扣运费/折扣/坏账</div>
+          </td>
+          <td>
+            <div class="input-prefix">
+              <input type="number" id="r-profit" placeholder="5" min="0" max="100" step="0.1" oninput="calcAll()">
+              <span>%</span>
+            </div>
+            <div class="hint">基本利润提成比</div>
+          </td>
+          <td>
+            <input type="text" id="note-profit" placeholder="利润核算以财务部出具的利润确认单为准">
+          </td>
+        </tr>
+        <tr>
+          <td class="label">超额利润目标</td>
+          <td>
+            <div class="input-prefix">
+              <span>超出基础目标</span>
+            </div>
+            <div class="hint">超出基础利润目标的部分自动适用</div>
+          </td>
+          <td>
+            <div class="input-prefix">
+              <input type="number" id="r-extra" placeholder="8" min="0" max="100" step="0.1" oninput="calcAll()">
+              <span>%</span>
+            </div>
+            <div class="hint">超额利润提成比（高于基础利润提成）</div>
+          </td>
+          <td>
+            <input type="text" id="note-extra" placeholder="超额部分单独计提，激励超额完成">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 实时预览结果带 -->
+    <div class="result-band" id="resultBand">
+      <div class="ri">
+        <div class="rl">完成基础目标最低提成</div>
+        <div class="rv" id="res-min">¥—</div>
+      </div>
+      <div class="ri">
+        <div class="rl">完成基础目标标准提成</div>
+        <div class="rv" id="res-std">¥—</div>
+      </div>
+      <div class="ri">
+        <div class="rl">超额利润+20%时预估提成</div>
+        <div class="rv gold" id="res-extra">¥—</div>
+      </div>
+      <div class="ri" style="font-size:11px;color:rgba(255,255,255,.4);max-width:180px;text-align:right;">
+        以上为估算，实际以财务核算数据为准
+      </div>
+    </div>
+
+    <!-- ③ 提成计算规则 -->
+    <div class="sec-title">三、提成计算规则</div>
+    <div class="tier-box">
+      <div class="tier-header">月度提成计算逻辑（月度预发 × 70%，年度汇算补足剩余 30%）</div>
+      <div class="tier-item">
+        <div class="tier-dot" style="background:#FFF0F0;color:#C8000A;border:1.5px solid #C8000A;">1</div>
+        <div class="tier-text">
+          <b>销售达成率 &lt; 80%</b>：当月不计提销售额提成；利润提成按实际利润 × 基本利润提成比 × 达成率计算（不打折扣下限为0）。
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-dot" style="background:#FFF8E0;color:#B7860B;border:1.5px solid #B7860B;">2</div>
+        <div class="tier-text">
+          <b>销售达成率 80%–99%</b>：销售额提成 = 实际销售额 × 基础销售提成比 × 达成率系数；利润提成按实际利润正常计提。
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-dot" style="background:#EBF5EC;color:#1E5631;border:1.5px solid #1E5631;">3</div>
+        <div class="tier-text">
+          <b>完成基础销售目标（≥100%）</b>：提成 = 基础销售额 × 销售提成比 + 实际利润 × 基本利润提成比，两项叠加计算。
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-dot" style="background:#E8F0FB;color:#1C2D4E;border:1.5px solid #1C2D4E;">4</div>
+        <div class="tier-text">
+          <b>利润超额完成</b>：在第3项基础上，超出利润目标部分额外按 <b>超额利润提成比</b> 单独计提，不受基础利润提成比上限限制。<br>
+          公式：超额提成 = （实际利润 − 基础利润目标）× 超额利润提成比
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 发放方式 -->
+    <div class="sec-title">四、提成发放方式</div>
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <td class="label">月度发放</td>
+          <td colspan="3">
+            每月核算完成后（次月<input type="number" id="payDay" style="width:36px;text-align:center;" placeholder="10">日），
+            将当月应发提成的
+            <input type="number" id="payPct" style="width:40px;text-align:center;" placeholder="70" oninput="calcAll()">%
+            随工资一并发放；剩余
+            <span id="holdPct" style="font-weight:700;color:var(--red);">30</span>%
+            留存至年度汇算。
+          </td>
+        </tr>
+        <tr>
+          <td class="label">年度汇算</td>
+          <td colspan="3">
+            次年
+            <input type="text" style="width:50px;text-align:center;" placeholder="1">
+            月完成年度汇算，以全年实际财务数据为准，补发或追回差额后发放全额剩余留存提成。
+          </td>
+        </tr>
+        <tr>
+          <td class="label">数据截止</td>
+          <td colspan="3">
+            每月末（最后一个工作日）为当月数据截止日，截止后数据由财务部锁定，
+            修改须经财务总监审批，提成异议申请窗口期为次月5日内。
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ⑤ 数据确认规则 -->
+    <div class="sec-title">五、数据确认与校准规则</div>
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <td class="label">数据来源</td>
+          <td colspan="3">
+            一切以 <strong>ERP系统</strong> 导出数据为唯一有效数据来源，禁止使用Excel手工汇总数据作为提成计算依据。
+            收入确认时间以<strong>实际发货日期</strong>为准（非开票日期）。
+          </td>
+        </tr>
+        <tr>
+          <td class="label">利润口径</td>
+          <td colspan="3">
+            本书所指"利润"为财务部核算后的<strong>净毛利润</strong>，需扣除：<br>
+            ① 退换货冲减金额　② 客户折扣优惠　③ 促销费用分摊　④ 本期坏账损失<br>
+            每月由财务部出具《利润确认单》，双方签字后作为提成计算依据。
+          </td>
+        </tr>
+        <tr>
+          <td class="label">目标调整</td>
+          <td colspan="3">
+            年度目标一经签订不得单方面修改。如遇重大市场变化（政策调整、不可抗力等），
+            连续 <strong>2个月</strong> 达成率低于70%且有明确外因，可申请季度评审；
+            调整须经直属上级、部门负责人、财务部<strong>三方书面确认</strong>方可生效。
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ⑥ 附加条款 -->
+    <div class="sec-title">六、附加条款</div>
+    <div style="border:1px solid var(--line);padding:14px 16px;margin-bottom:4px;">
+      <div class="clause">
+        <div class="clause-item">本责任书自双方签字之日起生效，具有同等法律效力。</div>
+        <div class="clause-item">乙方在考核期内离职，离职当月提成按实际在职天数比例核算，留存提成在完成年度财务核算后统一结清。</div>
+        <div class="clause-item">乙方因个人原因造成客户退货、坏账损失，相应利润冲减后重新核算提成，已发放部分从下月工资中扣回。</div>
+        <div class="clause-item">对提成计算结果有异议，须在次月5日内书面提出，逾期视为认可；争议最终由财务总监裁定。</div>
+        <div class="clause-item">本责任书一式三份，甲方（公司）留存一份，乙方（员工）留存一份，人事部门存档一份。</div>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--gray);">
+        补充约定（如有）：
+        <textarea id="extra-clause" placeholder="如有特殊约定，在此填写…" style="margin-top:6px;width:100%;"></textarea>
+      </div>
+    </div>
+
+    <!-- ⑦ 签字区 -->
+    <div class="sec-title navy">七、签字确认</div>
+    <div class="sign-grid">
+      <div class="sign-cell">
+        <div class="sign-label">甲方（公司代表）</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:8px;">海南南国实业集团</div>
+        <div class="sign-line">
+          <span>签字：_______________</span>
+          <span>日期：___________</span>
+        </div>
+      </div>
+      <div class="sign-cell">
+        <div class="sign-label">乙方（员工本人）</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:8px;" id="sign-name-show">姓名：____________</div>
+        <div class="sign-line">
+          <span>签字：_______________</span>
+          <span>日期：___________</span>
+        </div>
+      </div>
+      <div class="sign-cell">
+        <div class="sign-label">直属上级确认</div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:8px;" id="sign-sup-show">姓名：____________</div>
+        <div class="sign-line">
+          <span>签字：_______________</span>
+          <span>日期：___________</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-hint no-print">
+      💡 填写完成后，点击右上角「打印 / 导出PDF」即可保存或打印
+    </div>
+
+    <div class="watermark-note">
+      海南南国实业集团 · 内部人事文件 · 未经授权不得外传
+    </div>
+
+  </div><!-- /doc-body -->
+</div><!-- /page -->
+
+<script>
+// 初始化编号和日期
+window.onload = function() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  document.getElementById('docNo').value = 'NG-' + y + m + '-' + String(Math.floor(Math.random()*900)+100);
+  document.getElementById('docYear').value = y;
+  document.getElementById('signDate').value = y+'-'+m+'-'+d;
+  document.getElementById('startDate').value = y+'-01-01';
+  document.getElementById('endDate').value = y+'-12-31';
+  document.getElementById('payPct').value = 70;
+};
+
+// 姓名/上级同步
+document.getElementById('name').addEventListener('input', function() {
+  document.getElementById('sign-name-show').textContent = '姓名：' + (this.value || '____________');
+});
+document.getElementById('superior').addEventListener('input', function() {
+  document.getElementById('sign-sup-show').textContent = '姓名：' + (this.value || '____________');
+});
+
+// 留存比例联动
+document.getElementById('payPct').addEventListener('input', function() {
+  const v = parseFloat(this.value) || 70;
+  document.getElementById('holdPct').textContent = Math.round(100 - v);
+  calcAll();
+});
+
+// 提成计算
+function fmt(n) { return '¥' + Math.round(n).toLocaleString('zh-CN'); }
+
+function calcAll() {
+  const baseSales  = parseFloat(document.getElementById('t-sales').value)  || 0;
+  const baseProfit = parseFloat(document.getElementById('t-profit').value) || 0;
+  const sr = (parseFloat(document.getElementById('r-sales').value)  || 0) / 100;
+  const pr = (parseFloat(document.getElementById('r-profit').value) || 0) / 100;
+  const er = (parseFloat(document.getElementById('r-extra').value)  || 0) / 100;
+
+  if (baseSales === 0 && baseProfit === 0) {
+    document.getElementById('res-min').textContent   = '¥—';
+    document.getElementById('res-std').textContent   = '¥—';
+    document.getElementById('res-extra').textContent = '¥—';
+    return;
+  }
+
+  // 完成基础目标标准提成
+  const std = baseSales * sr + baseProfit * pr;
+  // 最低（达成80%时）
+  const min = baseSales * 0.8 * sr * 0.8 + baseProfit * 0.8 * pr;
+  // 超额利润+20%时
+  const extraProfit = baseProfit * 0.20;
+  const extra = std + extraProfit * er;
+
+  document.getElementById('res-min').textContent   = fmt(min);
+  document.getElementById('res-std').textContent   = fmt(std);
+  document.getElementById('res-extra').textContent = fmt(extra);
+}
+
+// 重置表单
+function resetForm() {
+  if (!confirm('确认重置所有填写内容？')) return;
+  document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select, textarea').forEach(el => {
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  window.onload();
+  document.getElementById('holdPct').textContent = '30';
+  calcAll();
+}
+</script>
+</body>
+</html>
